@@ -1,6 +1,6 @@
 package com.ll.medium.global.rq.Rq;
 
-import com.ll.medium.global.rsData.RsData.RsData;
+import com.ll.medium.global.rsData.RsData;
 import com.ll.medium.standard.util.Ut.Ut;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,14 +39,15 @@ public class Rq {
         return sb.toString();
     }
 
-    public String historyBack(String msg) {
-        request.setAttribute("failMsg", msg);
+    public String historyBack(RsData<?> rs) {
+        response.setStatus(rs.getStatusCode());
+        request.setAttribute("failMsg", rs.getMsg());
 
         return "global/js";
     }
 
     public String redirectOrBack(RsData<?> rs, String path) {
-        if (rs.isFail()) return historyBack(rs.getMsg());
+        if (rs.isFail()) return historyBack(rs);
 
         return redirect(path, rs.getMsg());
     }
