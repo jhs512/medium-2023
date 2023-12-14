@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -21,7 +22,7 @@ public class MemberService {
     @Transactional
     public RsData<Member> join(String username, String password) {
         if (findByUsername(username).isPresent()) {
-            return RsData.of("400-2", "이미 존재하는 회원입니다.");
+            throw new GlobalException("400-2", "이미 존재하는 회원입니다.");
         }
 
         Member member = Member.builder()
@@ -39,5 +40,9 @@ public class MemberService {
 
     public long count() {
         return memberRepository.count();
+    }
+
+    public Optional<Member> findLatest() {
+        return memberRepository.findTopByOrderByIdDesc();
     }
 }

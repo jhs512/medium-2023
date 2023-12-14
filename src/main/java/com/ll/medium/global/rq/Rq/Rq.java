@@ -26,17 +26,7 @@ public class Rq {
     public String redirect(String url, String msg) {
         msg = URLEncoder.encode(msg, StandardCharsets.UTF_8);
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("redirect:");
-        sb.append(url);
-
-        if (msg != null) {
-            sb.append("?msg=");
-            sb.append(msg);
-        }
-
-        return sb.toString();
+        return "redirect:" + Ut.url.modifyQueryParam(url, "msg", msg);
     }
 
     public String historyBack(RsData<?> rs) {
