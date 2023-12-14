@@ -42,7 +42,7 @@ public class MemberController {
     public String join(@Valid JoinForm joinForm) {
         RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword());
 
-        return rq.redirectOrBack(joinRs, "/member/login?lastUsername=" + joinRs.getData().getUsername());
+        return rq.redirectOrBack("/member/login?lastUsername=" + joinRs.getData().getUsername(), joinRs);
     }
 
     @GetMapping("/login")

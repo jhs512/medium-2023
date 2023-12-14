@@ -3,11 +3,13 @@ package com.ll.medium.domain.post.post.controller;
 import com.ll.medium.domain.post.post.entity.Post;
 import com.ll.medium.domain.post.post.service.PostService;
 import com.ll.medium.global.rq.Rq.Rq;
+import com.ll.medium.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,5 +47,13 @@ public class PostController {
         rq.setAttribute("page", page);
 
         return "domain/post/post/list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/write")
+    public String showWrite() {
+        RsData<Post> genRs = postService.genTempPost(rq.getMember());
+
+        return rq.redirectOrBack("/post/" + genRs.getData().getId() + "/modify", genRs);
     }
 }

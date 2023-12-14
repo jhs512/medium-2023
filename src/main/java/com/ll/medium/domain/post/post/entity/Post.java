@@ -22,4 +22,5 @@ public class Post extends BaseEntity {
     private String title;
     private String body;
     private boolean isPublished;
+    private boolean isTemp;
 }
